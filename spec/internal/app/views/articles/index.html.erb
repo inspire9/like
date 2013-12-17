@@ -1,0 +1,5 @@
+<h1>Articles</h1>
+
+<% @articles.each do |article| %>
+  <%= link_to "View #{article.id}", article %>
+<% end %>

@@ -6,4 +6,8 @@ class Like::Like < ActiveRecord::Base
 
   validates :liker,    presence: true
   validates :likeable, presence: true
+
+  def self.like(liker, likeable)
+    create liker: liker, likeable: likeable
+  end
 end

@@ -1,6 +1,11 @@
+require 'rails'
+
 module Like
-  def self.link(liker, likeable)
-    Like::Like.create liker: liker, likeable: likeable
+  def self.controllers
+    @controllers ||= {
+      user:   lambda { |controller| controller.current_user },
+      filter: lambda { |controller| true }
+    }
   end
 end
 
