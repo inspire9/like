@@ -7,6 +7,13 @@ class Like::Like < ActiveRecord::Base
   validates :liker,    presence: true
   validates :likeable, presence: true
 
+  scope :with_liker,    lambda { |liker|
+    where liker_type: liker.class.name, liker_id: liker.id
+  }
+  scope :with_likeable, lambda { |likeable|
+    where likeable_type: likeable.class.name, likeable_id: likeable.id
+  }
+
   def self.like(liker, likeable)
     create liker: liker, likeable: likeable
   end
@@ -14,16 +21,10 @@ class Like::Like < ActiveRecord::Base
   def self.liking?(liker, likeable)
     return false if liker.nil? || likeable.nil?
 
-    where(
-      liker_type:    liker.class.name,    liker_id:    liker.id,
-      likeable_type: likeable.class.name, likeable_id: likeable.id
-    ).count > 0
+    with_liker(liker).with_likeable(likeable).count > 0
   end
 
   def self.unlike(liker, likeable)
-    where(
-      liker_type:    liker.class.name,    liker_id:    liker.id,
-      likeable_type: likeable.class.name, likeable_id: likeable.id
-    ).each &:destroy
+    with_liker(liker).with_likeable(likeable).each &:destroy
   end
 end
