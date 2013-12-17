@@ -8,9 +8,6 @@ module Like::LikesHelper
   end
 
   def likeable_to_params(likeable)
-    {
-      likeable_type: likeable.class.name,
-      likeable_id:   likeable.id
-    }
+    {likeable_type: likeable.class.name, likeable_id: likeable.id}
   end
 end
