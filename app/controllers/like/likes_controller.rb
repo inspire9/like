@@ -7,6 +7,12 @@ class Like::LikesController < ActionController::Base
     redirect_to :back
   end
 
+  def destroy
+    Like::Like.unlike user, likeable
+
+    redirect_to :back
+  end
+
   private
 
   def like_filters

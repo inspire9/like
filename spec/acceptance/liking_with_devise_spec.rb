@@ -12,41 +12,60 @@ describe 'Liking an object' do
     }
   end
 
-  it "saves the like if signed in" do
-    visit new_user_session_path
+  context 'authenticated' do
+    before :each do
+      visit new_user_session_path
 
-    fill_in 'Email',    with: user.email
-    fill_in 'Password', with: user.password
+      fill_in 'Email',    with: user.email
+      fill_in 'Password', with: user.password
 
-    click_button 'Sign in'
+      click_button 'Sign in'
+    end
 
-    visit article_path(article)
-    click_link 'Like'
+    it "saves the like" do
+      visit article_path(article)
+      click_link 'Like'
 
-    likes = Like::Like.where(
-      liker_type:    'User',    liker_id:    user.id,
-      likeable_type: 'Article', likeable_id: article.id
-    )
+      likes = Like::Like.where(
+        liker_type:    'User',    liker_id:    user.id,
+        likeable_type: 'Article', likeable_id: article.id
+      )
 
-    expect(likes.count).to eq(1)
+      expect(likes.count).to eq(1)
+    end
+
+    it "can delete the like" do
+      visit article_path(article)
+      click_link 'Like'
+      click_link 'Unlike'
+
+      likes = Like::Like.where(
+        liker_type:    'User',    liker_id:    user.id,
+        likeable_type: 'Article', likeable_id: article.id
+      )
+
+      expect(likes.count).to eq(0)
+    end
   end
 
-  it "redirects to the sign in page if not authenticated" do
-    visit article_path(article)
-    click_link 'Like'
+  context 'unauthenticated' do
+    it "redirects to the sign in page" do
+      visit article_path(article)
+      click_link 'Like'
 
-    expect(page).to have_content('Sign in')
-  end
+      expect(page).to have_content('Sign in')
+    end
 
-  it "doesn't save a like if not authenticated" do
-    visit article_path(article)
-    click_link 'Like'
+    it "doesn't save a like" do
+      visit article_path(article)
+      click_link 'Like'
 
-    likes = Like::Like.where(
-      liker_type:    'User',    liker_id:    user.id,
-      likeable_type: 'Article', likeable_id: article.id
-    )
+      likes = Like::Like.where(
+        liker_type:    'User',    liker_id:    user.id,
+        likeable_type: 'Article', likeable_id: article.id
+      )
 
-    expect(likes.count).to eq(0)
+      expect(likes.count).to eq(0)
+    end
   end
 end

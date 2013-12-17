@@ -1,1 +1,5 @@
-<%= link_to 'Like', like_path_for(@article), method: :post %>
+<% if Like::Like.liking?(current_user, @article) %>
+  <%= link_to 'Unlike', like_path_for(@article), method: :delete %>
+<% else %>
+  <%= link_to 'Like', like_path_for(@article), method: :post %>
+<% end %>

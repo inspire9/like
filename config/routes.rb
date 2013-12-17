@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   namespace :like do
-    resources :likes, only: [:create, :destroy]
+    post   'likes', to: 'likes#create', as: :likes
+    delete 'likes', to: 'likes#destroy'
   end
 end
