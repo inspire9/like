@@ -1,1 +1,1 @@
-<%= link_to 'Like', like_likes_path(likeable_type: 'Article', likeable_id: @article.id), method: :post %>
+<%= link_to 'Like', like_path_for(@article), method: :post %>
