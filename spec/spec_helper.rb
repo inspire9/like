@@ -3,6 +3,7 @@ require 'bundler'
 Bundler.setup :default, :development
 
 require 'combustion'
+require 'grape'
 require 'like'
 require 'devise'
 

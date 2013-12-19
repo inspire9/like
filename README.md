@@ -70,6 +70,42 @@ Like::Like.with_liker(user).count
 
 Like doesn't care if your user model is called something else - it's a polymorphic association under the hood, so anything is accepted as the 'liker'. The same applies for 'likeable' as well.
 
+## Usage as an API
+
+Like comes with an optional API you can mount instead of the standard ActionController controller. You'll need to add Grape (0.5 or newer) to your Gemfile as well, and then the API can be mounted wherever you like. There's simple POST and DELETE endpoints at the root of the API, and they accept two parameters following ActiveRecord polymorphic defaults: likeable_type and likeable_id.
+
+```ruby
+Rails.application.routes.draw do
+  # mounting the following:
+  mount Like::API => '/api/likes'
+  # adds to endpoints:
+  #   POST   /api/likes
+  #   DELETE /api/likes
+
+  # ...
+end
+```
+
+You'll want to tweak the interaction class so the post_action returns something useful (instead of the default redirect, which is meaningless in the API context), and ensure the liker is set as well. Here's an example (again, it's Devise-friendly):
+
+```ruby
+Like.interaction_class = Class.new(Like::Interaction) do
+  def pre_action
+    error!('403 Forbidden', 403) unless liker
+  end
+
+  def post_action
+    {'status' => 'OK'}
+  end
+
+  private
+
+  def liker
+    env['warden'].authenticated?(:user) ? env['warden'].user(:user) : nil
+  end
+end
+```
+
 ## Contributing
 
 1. Fork it
