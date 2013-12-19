@@ -4,13 +4,13 @@ class Like::LikesController < ActionController::Base
   def create
     Like::Like.like user, likeable
 
-    redirect_to :back
+    Like.controllers[:redirect].call self
   end
 
   def destroy
     Like::Like.unlike user, likeable
 
-    redirect_to :back
+    Like.controllers[:redirect].call self
   end
 
   private
