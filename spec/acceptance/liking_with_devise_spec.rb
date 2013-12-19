@@ -6,10 +6,17 @@ describe 'Liking an object' do
   let(:article) { Article.create! }
 
   before :each do
-    Like.controllers[:user]   = lambda { |controller| controller.current_user }
-    Like.controllers[:filter] = lambda { |controller|
-      controller.authenticate_user!
-    }
+    Like.interaction_class = Class.new(Like::Interaction) do
+      def pre_action
+        controller.authenticate_user!
+      end
+
+      private
+
+      def liker
+        controller.current_user
+      end
+    end
   end
 
   context 'authenticated' do

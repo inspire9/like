@@ -17,7 +17,12 @@ describe 'Liking an object' do
   end
 
   it "saves the like through a web request" do
-    Like.controllers[:user] = lambda { |controller| user }
+    user
+    Like.interaction_class = Class.new(Like::Interaction) do
+      def liker
+        User.first
+      end
+    end
 
     post '/like/likes', {likeable_type: 'Article', likeable_id: article.id},
       {'HTTP_REFERER' => '/'}

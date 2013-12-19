@@ -1,29 +1,19 @@
-class Like::LikesController < ActionController::Base
-  before_filter :like_filters
+class Like::LikesController < ApplicationController
+  before_filter { interaction.pre_action }
 
   def create
-    Like::Like.like user, likeable
-
-    Like.controllers[:redirect].call self
+    interaction.create
+    interaction.post_action
   end
 
   def destroy
-    Like::Like.unlike user, likeable
-
-    Like.controllers[:redirect].call self
+    interaction.destroy
+    interaction.post_action
   end
 
   private
 
-  def like_filters
-    Like.controllers[:filter].call self
-  end
-
-  def likeable
-    likeable = params[:likeable_type].constantize.find params[:likeable_id]
-  end
-
-  def user
-    Like.controllers[:user].call self
+  def interaction
+    @interaction ||= Like.interaction_class.new self
   end
 end

@@ -1,13 +1,10 @@
 require 'rails'
 
 module Like
-  def self.controllers
-    @controllers ||= {
-      user:     lambda { |controller| controller.current_user },
-      filter:   lambda { |controller| true },
-      redirect: lambda { |controller| controller.redirect_to :back }
-    }
-  end
+  mattr_accessor :interaction_class
 end
 
 require 'like/engine'
+require 'like/interaction'
+
+Like.interaction_class = Like::Interaction

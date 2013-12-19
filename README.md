@@ -28,20 +28,25 @@ All you need to do to use this engine is have something like the following in yo
 <% end %>
 ```
 
-And then, probably in an initializer, tell Like how to determine who the currently signed in user is, along with any filters you wish the underlying controller to implement:
+By default, Like presumes the object that the like is created by (the liker) is available through the `current_user` method in a standard controller inheriting from ApplicationController.
+
+If you wish to customise this, you'll need to subclass from Like::Interaction and override the `liker` method. The same goes for adding in methods to be called as part of a before filter. Here's an implementation that's Devise-friendly:
 
 ```ruby
-Like.controllers[:user]   = lambda { |controller|
-  controller.current_user
-}
-Like.controllers[:filter] = lambda { |controller|
-  controller.authenticate_user!
-}
+Like.interaction_class = Class.new(Like::Interaction) do
+  def pre_action
+    controller.authenticate_user!
+  end
+
+  private
+
+  def liker
+    controller.current_user
+  end
+end
 ```
 
-The above example is exactly what you'd need if you're using Devise with a User model.
-
-Of course, you probably want to know how many likes an object has:
+At some point, you'll probably want to know how many likes an object has:
 
 ```ruby
 Like::Like.with_likeable(article).count
