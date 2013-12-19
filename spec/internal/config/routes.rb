@@ -3,5 +3,7 @@ Rails.application.routes.draw do
 
   resources :articles
 
+  mount Like::Engine => '/'
+
   root to: 'articles#index'
 end

@@ -28,6 +28,16 @@ All you need to do to use this engine is have something like the following in yo
 <% end %>
 ```
 
+And mount the necessary routes (which are already namespaced under `/like`):
+
+```ruby
+Rails.application.routes.draw do
+  # ...
+  mount Like::Engine => '/'
+  # ...
+end
+```
+
 By default, Like presumes the object that the like is created by (the liker) is available through the `current_user` method in a standard controller inheriting from ApplicationController.
 
 If you wish to customise this, you'll need to subclass from Like::Interaction and override the `liker` method. The same goes for adding in methods to be called as part of a before filter. Here's an implementation that's Devise-friendly:

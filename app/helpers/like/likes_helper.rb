@@ -1,10 +1,10 @@
 module Like::LikesHelper
   def like_path_for(likeable)
-    like_likes_path likeable_to_params(likeable)
+    like.like_likes_path likeable_to_params(likeable)
   end
 
   def like_url_for(likeable)
-    like_likes_url likeable_to_params(likeable)
+    like.like_likes_url likeable_to_params(likeable)
   end
 
   def likeable_to_params(likeable)
