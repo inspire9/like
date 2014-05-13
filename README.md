@@ -6,7 +6,7 @@ A simple Rails engine for liking ActiveRecord objects.
 
 Add this line to your application's Gemfile:
 
-    gem 'like', '0.2.0'
+    gem 'like', '0.2.1'
 
 Don't forget to bundle:
 
