@@ -12,7 +12,7 @@ class Like::Interaction
   end
 
   def post_action
-    controller.redirect_to :back
+    controller.redirect_to :back, status: 303
   end
 
   def pre_action
