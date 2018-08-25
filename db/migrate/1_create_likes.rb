@@ -1,4 +1,6 @@
-class CreateLikes < ActiveRecord::Migration
+superclass = ActiveRecord::VERSION::MAJOR < 5 ?
+  ActiveRecord::Migration : ActiveRecord::Migration[4.2]
+class CreateLikes < superclass
   def change
     create_table :like_likes do |t|
       t.string  :liker_type,    null: false
