@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Liking an object' do
+RSpec.describe 'Liking an object', :type => :request do
   let(:user)    { User.create! email: 'pat@test.com', password: 'password',
     password_confirmation: 'password' }
   let(:article) { Article.create! }
@@ -24,8 +24,9 @@ describe 'Liking an object' do
       end
     end
 
-    post '/like/likes', {likeable_type: 'Article', likeable_id: article.id},
-      {'HTTP_REFERER' => '/'}
+    post '/like/likes',
+      :params  => {likeable_type: 'Article', likeable_id: article.id},
+      :headers => {'HTTP_REFERER' => '/'}
 
     likes = Like::Like.where(
       liker_type:    'User',    liker_id:    user.id,
