@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'capybara',    '>= 2.2.0'
   spec.add_development_dependency 'combustion',  '~> 0.5'
   spec.add_development_dependency 'devise',      '>= 3.2.2'
-  spec.add_development_dependency 'grape',       '~> 0.5'
+  spec.add_development_dependency 'grape',       '~> 1.1'
   spec.add_development_dependency 'mime-types',  '>= 1.16'
   spec.add_development_dependency 'rspec-rails', '~> 3.8'
   spec.add_development_dependency 'sqlite3',     '~> 1.3.8'
