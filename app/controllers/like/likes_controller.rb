@@ -1,5 +1,9 @@
 class Like::LikesController < ApplicationController
-  before_filter { interaction.pre_action }
+  if ActionPack::VERSION::STRING.to_i > 4
+    before_action { interaction.pre_action }
+  else
+    before_filter { interaction.pre_action }
+  end
 
   def create
     interaction.create

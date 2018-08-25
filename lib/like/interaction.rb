@@ -12,7 +12,11 @@ class Like::Interaction
   end
 
   def post_action
-    controller.redirect_to :back, status: 303
+    if ActionPack::VERSION::STRING.to_i > 4
+      controller.redirect_back fallback_location: "/"#, status: 303
+    else
+      controller.redirect_to :back, status: 303
+    end
   end
 
   def pre_action
